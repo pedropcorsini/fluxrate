@@ -11,7 +11,7 @@ class Asset(models.Model):
     TYPE_CHOICES = [
         ('fiat', 'Fiat'),
         ('crypto', 'Crypto'),
-    ]  # deve ser uma lista de tuplas, não um set() — choices exige pares ordenados (valor, label)
+    ]  # deve ser uma lista de tuplas, não um set(): choices exige pares ordenados (valor, label)
     type = models.CharField(max_length=10, choices=TYPE_CHOICES)
 
     def __str__(self):

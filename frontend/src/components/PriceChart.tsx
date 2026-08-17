@@ -11,7 +11,7 @@ function formatTime(timestamp: string) {
 
 /**
  * Compact axis formatter whose decimal precision adapts to how tight the
- * data range is — a fixed precision like "330k" collapses close values
+ * data range is. A fixed precision like "330k" collapses close values
  * (329674 and 330070 would both round to the same label).
  */
 function makeCompactFormatter(values: number[]) {

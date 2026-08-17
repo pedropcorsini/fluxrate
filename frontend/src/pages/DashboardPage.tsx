@@ -158,7 +158,7 @@ export function DashboardPage() {
       <div className="glass-panel mb-6 rounded-xl p-5">
         <h2 className="mb-4 flex items-center gap-2 text-sm font-medium text-[var(--color-text-muted)]">
           <ChartLineUp size={16} weight="bold" aria-hidden="true" />
-          {selectedAssetCode ? `Histórico de preço — ${selectedAssetCode}` : 'Selecione um ativo na watchlist'}
+          {selectedAssetCode ? `Histórico de preço de ${selectedAssetCode}` : 'Selecione um ativo na watchlist'}
         </h2>
         <PriceChart quotes={assetHistory} />
       </div>

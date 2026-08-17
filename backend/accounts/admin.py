@@ -1,1 +1,1 @@
-"""Admin do app accounts (sem models próprios — usa o User padrão do Django)."""
+"""Admin do app accounts (sem models próprios; usa o User padrão do Django)."""

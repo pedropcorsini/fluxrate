@@ -10,9 +10,9 @@ quote syncing via Celery.
 
 ## Architecture
 
-- `Asset` — catalog of tracked fiat/crypto assets
-- `Quote` — historical price of an asset in a reference currency (BRL/USD)
-- `Watchlist` — per-user favorite assets
+- `Asset`: catalog of tracked fiat/crypto assets
+- `Quote`: historical price of an asset in a reference currency (BRL/USD)
+- `Watchlist`: per-user favorite assets
 - Quotes are fetched from [AwesomeAPI](https://docs.awesomeapi.com.br/) (fiat)
   and [CoinGecko](https://www.coingecko.com/en/api) (crypto), synced every 5
   minutes by a Celery Beat schedule (`tracker.tasks.sync_quotes_task`)
