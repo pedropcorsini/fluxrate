@@ -144,3 +144,22 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
 }
+
+
+# Celery
+# https://docs.celeryq.dev/en/stable/userguide/configuration.html
+
+CELERY_BROKER_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+
+# Agenda fixa: roda sync_quotes a cada 5 minutos.
+CELERY_BEAT_SCHEDULE = {
+    'sync-quotes-every-5-minutes': {
+        'task': 'tracker.tasks.sync_quotes_task',
+        'schedule': 300.0,  # segundos
+    },
+}
