@@ -1,3 +1,1 @@
-from django.contrib import admin
-
-# Register your models here.
+"""Admin do app accounts (sem models próprios — usa o User padrão do Django)."""

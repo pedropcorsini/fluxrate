@@ -1,3 +1,1 @@
-from django.db import models
-
-# Create your models here.
+"""Models do app accounts (sem models próprios — usa o User padrão do Django)."""

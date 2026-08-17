@@ -1,4 +1,6 @@
+"""Configuração do app Celery do projeto (broker/result backend via settings.CELERY_*)."""
 import os
+
 from celery import Celery
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
