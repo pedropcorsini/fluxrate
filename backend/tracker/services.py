@@ -34,4 +34,21 @@ def fetch_crypto_quote(asset, target_currency):
 
     return float(data[coin_id][vs_currency])
 
+def sync_quotes():
+    target_currencies = ['BRL', 'USD']
 
+    for asset in Asset.objects.all():
+        for currency in target_currencies:
+            if asset.type == 'fiat':
+                value = fetch_fiat_quote(asset, currency)
+            else:
+                value = fetch_crypto_quote(asset, currency)
+
+            if value is None:
+                continue
+
+            Quote.objects.create(
+                asset=asset,
+                value=value,
+                quote_currency=currency,
+            )
