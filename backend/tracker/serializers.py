@@ -9,7 +9,7 @@ class AssetSerializer(serializers.ModelSerializer):
 class QuoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quote
-        fields = ['id', 'asset', 'value', 'timestamp']
+        fields = ['id', 'asset', 'value', 'quote_currency','timestamp']
 
 class WatchlistSerializer(serializers.ModelSerializer):
     class Meta:

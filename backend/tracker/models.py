@@ -18,10 +18,15 @@ class Quote(models.Model):
     """Histórco de cotações"""
     asset = models.ForeignKey(Asset, on_delete=models.CASCADE)
     value = models.DecimalField(max_digits=18, decimal_places=8) #total de dígitos e quantos depois da virgula | 8dig porque crypto tem preços bem fracionados.
+    QUOTE_CURRENCY_CHOICES = [
+        ('BRL', 'Real'),
+        ('USD', 'Dólar'),
+    ]
+    quote_currency = models.CharField(max_length=3, choices=QUOTE_CURRENCY_CHOICES)
     timestamp = models.DateTimeField(auto_now_add=True) 
 
     def __str__(self):
-        return f"{self.asset.code}: {self.value}"
+        return f"{self.asset.code}/{self.quote_currency}: {self.value}"
 
 class Watchlist(models.Model):
     """Relação do usuário <-> ativo favorito"""
