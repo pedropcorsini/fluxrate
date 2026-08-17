@@ -1,6 +1,8 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { AuthLayout } from '../components/AuthLayout'
+import { TextField } from '../components/TextField'
 
 export function LoginPage() {
   const { login } = useAuth()
@@ -25,48 +27,49 @@ export function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[var(--color-bg)] px-4">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-sm rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6"
-      >
-        <h1 className="mb-1 text-xl font-semibold">fluxrate</h1>
-        <p className="mb-6 text-sm text-[var(--color-text-muted)]">Entre na sua conta</p>
-
-        <label className="mb-1 block text-sm text-[var(--color-text-muted)]">Usuário</label>
-        <input
+    <AuthLayout
+      title="Bem-vindo de volta"
+      subtitle="Entre com sua conta para acessar sua watchlist."
+      footer={
+        <>
+          Não tem conta?{' '}
+          <Link to="/register" className="font-medium text-[var(--color-accent)] hover:underline">
+            Cadastre-se
+          </Link>
+        </>
+      }
+    >
+      <form onSubmit={handleSubmit}>
+        <TextField
+          label="Usuário"
           value={username}
           onChange={(event) => setUsername(event.target.value)}
-          className="mb-4 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-muted)] px-3 py-2 text-sm outline-none focus:border-[var(--color-accent)]"
+          autoComplete="username"
           required
         />
-
-        <label className="mb-1 block text-sm text-[var(--color-text-muted)]">Senha</label>
-        <input
+        <TextField
+          label="Senha"
           type="password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          className="mb-4 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-muted)] px-3 py-2 text-sm outline-none focus:border-[var(--color-accent)]"
+          autoComplete="current-password"
           required
         />
 
-        {error && <p className="mb-4 text-sm text-[var(--color-down)]">{error}</p>}
+        {error && (
+          <p className="mb-4 rounded-lg bg-[var(--color-down)]/10 px-3 py-2 text-sm text-[var(--color-down)]">
+            {error}
+          </p>
+        )}
 
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full rounded-lg bg-[var(--color-accent)] py-2 text-sm font-medium text-white disabled:opacity-50"
+          className="w-full cursor-pointer rounded-lg bg-[var(--color-accent)] py-2.5 text-sm font-medium text-[var(--color-accent-foreground)] shadow-sm transition-transform hover:brightness-110 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isSubmitting ? 'Entrando...' : 'Entrar'}
         </button>
-
-        <p className="mt-4 text-center text-sm text-[var(--color-text-muted)]">
-          Não tem conta?{' '}
-          <Link to="/register" className="text-[var(--color-accent)]">
-            Cadastre-se
-          </Link>
-        </p>
       </form>
-    </div>
+    </AuthLayout>
   )
 }

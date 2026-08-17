@@ -11,7 +11,15 @@ function ProtectedLayout({ children }: { children: React.ReactNode }) {
   if (!isAuthenticated) return <Navigate to="/login" replace />
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
+    <div className="relative min-h-screen overflow-x-hidden bg-[var(--color-bg)] text-[var(--color-text)]">
+      <div
+        className="pointer-events-none fixed inset-0 -z-10 opacity-40"
+        style={{
+          backgroundImage:
+            'radial-gradient(600px circle at 10% 0%, var(--color-accent), transparent 60%), radial-gradient(500px circle at 90% 20%, var(--color-up), transparent 55%)',
+          filter: 'blur(60px)',
+        }}
+      />
       <Navbar />
       {children}
     </div>

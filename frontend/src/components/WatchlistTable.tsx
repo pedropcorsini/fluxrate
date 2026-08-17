@@ -1,3 +1,4 @@
+import { TrendDown, TrendUp, X } from '@phosphor-icons/react'
 import type { Asset } from '../lib/types'
 
 export interface WatchlistRow {
@@ -22,17 +23,17 @@ function formatCurrency(value: number, currency: string) {
 export function WatchlistTable({ rows, selectedAssetCode, onSelectAsset, onRemove, currency }: WatchlistTableProps) {
   if (rows.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-[var(--color-border)] p-8 text-center text-sm text-[var(--color-text-muted)]">
+      <div className="glass-panel rounded-xl border-dashed p-8 text-center text-sm text-[var(--color-text-muted)]">
         Sua watchlist está vazia. Vá em "Explorar ativos" pra adicionar o primeiro.
       </div>
     )
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-[var(--color-border)]">
+    <div className="glass-panel overflow-hidden rounded-xl">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-[var(--color-border)] bg-[var(--color-surface-muted)] text-left text-[var(--color-text-muted)]">
+          <tr className="border-b border-[var(--color-border)] text-left text-[var(--color-text-muted)]">
             <th className="px-4 py-3 font-medium">Ativo</th>
             <th className="px-4 py-3 font-medium">Preço ({currency})</th>
             <th className="px-4 py-3 font-medium">Variação</th>
@@ -40,43 +41,55 @@ export function WatchlistTable({ rows, selectedAssetCode, onSelectAsset, onRemov
           </tr>
         </thead>
         <tbody>
-          {rows.map((row) => (
-            <tr
-              key={row.watchlistId}
-              onClick={() => onSelectAsset(row.asset.code)}
-              className={`cursor-pointer border-b border-[var(--color-border)] last:border-0 hover:bg-[var(--color-surface-muted)] ${
-                selectedAssetCode === row.asset.code ? 'bg-[var(--color-surface-muted)]' : ''
-              }`}
-            >
-              <td className="px-4 py-3">
-                <div className="font-medium">{row.asset.code}</div>
-                <div className="text-xs text-[var(--color-text-muted)]">{row.asset.name}</div>
-              </td>
-              <td className="px-4 py-3">
-                {row.latestValue !== null ? formatCurrency(row.latestValue, currency) : '—'}
-              </td>
-              <td className="px-4 py-3">
-                {row.changePercent !== null ? (
-                  <span style={{ color: row.changePercent >= 0 ? 'var(--color-up)' : 'var(--color-down)' }}>
-                    {row.changePercent >= 0 ? '▲' : '▼'} {Math.abs(row.changePercent).toFixed(2)}%
-                  </span>
-                ) : (
-                  '—'
-                )}
-              </td>
-              <td className="px-4 py-3 text-right">
-                <button
-                  onClick={(event) => {
-                    event.stopPropagation()
-                    onRemove(row.watchlistId)
-                  }}
-                  className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-down)]"
-                >
-                  Remover
-                </button>
-              </td>
-            </tr>
-          ))}
+          {rows.map((row) => {
+            const isUp = (row.changePercent ?? 0) >= 0
+            return (
+              <tr
+                key={row.watchlistId}
+                onClick={() => onSelectAsset(row.asset.code)}
+                className={`cursor-pointer border-b border-[var(--color-border)] transition-colors last:border-0 hover:bg-[var(--color-surface-muted)] ${
+                  selectedAssetCode === row.asset.code ? 'bg-[var(--color-surface-muted)]' : ''
+                }`}
+              >
+                <td className="px-4 py-3">
+                  <div className="font-medium">{row.asset.code}</div>
+                  <div className="text-xs text-[var(--color-text-muted)]">{row.asset.name}</div>
+                </td>
+                <td className="font-numeric px-4 py-3">
+                  {row.latestValue !== null ? formatCurrency(row.latestValue, currency) : '—'}
+                </td>
+                <td className="px-4 py-3">
+                  {row.changePercent !== null ? (
+                    <span
+                      className="font-numeric inline-flex items-center gap-1"
+                      style={{ color: isUp ? 'var(--color-up)' : 'var(--color-down)' }}
+                    >
+                      {isUp ? (
+                        <TrendUp size={14} weight="bold" aria-hidden="true" />
+                      ) : (
+                        <TrendDown size={14} weight="bold" aria-hidden="true" />
+                      )}
+                      {Math.abs(row.changePercent).toFixed(2)}%
+                    </span>
+                  ) : (
+                    '—'
+                  )}
+                </td>
+                <td className="px-4 py-3 text-right">
+                  <button
+                    onClick={(event) => {
+                      event.stopPropagation()
+                      onRemove(row.watchlistId)
+                    }}
+                    aria-label={`Remover ${row.asset.code} da watchlist`}
+                    className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md text-[var(--color-text-muted)] transition-colors hover:bg-[var(--color-down)]/10 hover:text-[var(--color-down)]"
+                  >
+                    <X size={14} weight="bold" />
+                  </button>
+                </td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
     </div>

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { ChartLineUp, Clock, ListStar, TrendDown, TrendUp } from '@phosphor-icons/react'
 import { api } from '../lib/api'
 import type { Asset, Paginated, Quote, QuoteCurrency, WatchlistItem } from '../lib/types'
 import { StatCard } from '../components/StatCard'
@@ -116,15 +117,15 @@ export function DashboardPage() {
     <div className="mx-auto max-w-6xl px-6 py-8">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Dashboard</h1>
-        <div className="flex overflow-hidden rounded-lg border border-[var(--color-border)]">
+        <div className="glass-panel flex overflow-hidden rounded-lg">
           {(['BRL', 'USD'] as const).map((option) => (
             <button
               key={option}
               onClick={() => setCurrency(option)}
-              className={`px-3 py-1.5 text-sm ${
+              className={`font-numeric cursor-pointer px-3 py-1.5 text-sm transition-colors ${
                 currency === option
-                  ? 'bg-[var(--color-accent)] text-white'
-                  : 'bg-[var(--color-surface)] text-[var(--color-text-muted)]'
+                  ? 'bg-[var(--color-accent)] text-[var(--color-accent-foreground)]'
+                  : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
               }`}
             >
               {option}
@@ -134,25 +135,29 @@ export function DashboardPage() {
       </div>
 
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="Ativos na watchlist" value={String(watchlistRows.length)} />
+        <StatCard label="Ativos na watchlist" value={String(watchlistRows.length)} icon={ListStar} />
         <StatCard
           label="Maior alta"
           value={stats.topGainer ? `${stats.topGainer.asset.code} +${stats.topGainer.changePercent!.toFixed(2)}%` : '—'}
           tone="up"
+          icon={TrendUp}
         />
         <StatCard
           label="Maior queda"
           value={stats.topLoser ? `${stats.topLoser.asset.code} ${stats.topLoser.changePercent!.toFixed(2)}%` : '—'}
           tone="down"
+          icon={TrendDown}
         />
         <StatCard
           label="Última atualização"
           value={stats.lastUpdate ? new Date(stats.lastUpdate).toLocaleTimeString('pt-BR') : '—'}
+          icon={Clock}
         />
       </div>
 
-      <div className="mb-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
-        <h2 className="mb-4 text-sm font-medium text-[var(--color-text-muted)]">
+      <div className="glass-panel mb-6 rounded-xl p-5">
+        <h2 className="mb-4 flex items-center gap-2 text-sm font-medium text-[var(--color-text-muted)]">
+          <ChartLineUp size={16} weight="bold" aria-hidden="true" />
           {selectedAssetCode ? `Histórico de preço — ${selectedAssetCode}` : 'Selecione um ativo na watchlist'}
         </h2>
         <PriceChart quotes={assetHistory} />

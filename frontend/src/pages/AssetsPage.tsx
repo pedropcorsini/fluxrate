@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Check, CurrencyDollar, Plus } from '@phosphor-icons/react'
 import { api } from '../lib/api'
 import type { Asset, Paginated, WatchlistItem } from '../lib/types'
 
@@ -33,11 +34,15 @@ export function AssetsPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-8">
-      <h1 className="mb-6 text-2xl font-semibold">Explorar ativos</h1>
-      <div className="overflow-hidden rounded-xl border border-[var(--color-border)]">
+      <h1 className="mb-1 text-2xl font-semibold">Explorar ativos</h1>
+      <p className="mb-6 text-sm text-[var(--color-text-muted)]">
+        Catálogo completo de fiat e crypto disponíveis pra acompanhar.
+      </p>
+
+      <div className="glass-panel overflow-hidden rounded-xl">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[var(--color-border)] bg-[var(--color-surface-muted)] text-left text-[var(--color-text-muted)]">
+            <tr className="border-b border-[var(--color-border)] text-left text-[var(--color-text-muted)]">
               <th className="px-4 py-3 font-medium">Código</th>
               <th className="px-4 py-3 font-medium">Nome</th>
               <th className="px-4 py-3 font-medium">Tipo</th>
@@ -48,17 +53,44 @@ export function AssetsPage() {
             {assets.map((asset) => {
               const alreadyAdded = watchlistedAssetIds.has(asset.id)
               return (
-                <tr key={asset.id} className="border-b border-[var(--color-border)] last:border-0">
-                  <td className="px-4 py-3 font-medium">{asset.code}</td>
+                <tr
+                  key={asset.id}
+                  className="border-b border-[var(--color-border)] transition-colors last:border-0 hover:bg-[var(--color-surface-muted)]"
+                >
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-2 font-medium">
+                      <CurrencyDollar
+                        size={16}
+                        weight="bold"
+                        className="text-[var(--color-text-muted)]"
+                        aria-hidden="true"
+                      />
+                      {asset.code}
+                    </div>
+                  </td>
                   <td className="px-4 py-3 text-[var(--color-text-muted)]">{asset.name}</td>
                   <td className="px-4 py-3 text-[var(--color-text-muted)] capitalize">{asset.type}</td>
                   <td className="px-4 py-3 text-right">
                     <button
                       disabled={alreadyAdded}
                       onClick={() => handleAdd(asset.id)}
-                      className="rounded-lg border border-[var(--color-border)] px-3 py-1 text-xs disabled:cursor-not-allowed disabled:opacity-50"
+                      className={`inline-flex cursor-pointer items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors disabled:cursor-not-allowed ${
+                        alreadyAdded
+                          ? 'border-[var(--color-border)] text-[var(--color-text-muted)] opacity-70'
+                          : 'border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-accent-foreground)]'
+                      }`}
                     >
-                      {alreadyAdded ? 'Na watchlist' : 'Adicionar'}
+                      {alreadyAdded ? (
+                        <>
+                          <Check size={14} weight="bold" aria-hidden="true" />
+                          Na watchlist
+                        </>
+                      ) : (
+                        <>
+                          <Plus size={14} weight="bold" aria-hidden="true" />
+                          Adicionar
+                        </>
+                      )}
                     </button>
                   </td>
                 </tr>
