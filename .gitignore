@@ -22,3 +22,6 @@ node_modules/
 # Editor
 .vscode/
 .DS_Store
+
+# Claude Code local tooling (skills installed via CLI, not project code)
+.claude/
