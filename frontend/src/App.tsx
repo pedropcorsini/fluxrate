@@ -16,7 +16,7 @@ function ProtectedLayout({ children }: { children: React.ReactNode }) {
         className="pointer-events-none fixed inset-0 -z-10 opacity-40"
         style={{
           backgroundImage:
-            'radial-gradient(600px circle at 10% 0%, var(--color-accent), transparent 60%), radial-gradient(500px circle at 90% 20%, var(--color-up), transparent 55%)',
+            'radial-gradient(600px circle at 10% 0%, var(--color-accent), transparent 60%), radial-gradient(500px circle at 90% 20%, var(--color-up), transparent 55%), radial-gradient(450px circle at 50% 100%, var(--color-accent-secondary), transparent 50%)',
           filter: 'blur(60px)',
         }}
       />

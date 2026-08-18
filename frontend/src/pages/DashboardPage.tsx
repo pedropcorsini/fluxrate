@@ -134,46 +134,57 @@ export function DashboardPage() {
         </div>
       </div>
 
-      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="Ativos na watchlist" value={String(watchlistRows.length)} icon={ListStar} />
+      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-12">
+        <StatCard
+          label="Ativos na watchlist"
+          value={String(watchlistRows.length)}
+          icon={ListStar}
+          className="lg:col-span-3"
+        />
         <StatCard
           label="Maior alta"
           value={stats.topGainer ? `${stats.topGainer.asset.code} +${stats.topGainer.changePercent!.toFixed(2)}%` : '—'}
           tone="up"
           icon={TrendUp}
+          className="lg:col-span-4"
+          emphasized
         />
         <StatCard
           label="Maior queda"
           value={stats.topLoser ? `${stats.topLoser.asset.code} ${stats.topLoser.changePercent!.toFixed(2)}%` : '—'}
           tone="down"
           icon={TrendDown}
+          className="lg:col-span-3"
         />
         <StatCard
           label="Última atualização"
           value={stats.lastUpdate ? new Date(stats.lastUpdate).toLocaleTimeString('pt-BR') : '—'}
           icon={Clock}
+          className="lg:col-span-2"
         />
-      </div>
 
-      <div className="glass-panel mb-6 rounded-xl p-5">
-        <h2 className="mb-4 flex items-center gap-2 text-sm font-medium text-[var(--color-text-muted)]">
-          <ChartLineUp size={16} weight="bold" aria-hidden="true" />
-          {selectedAssetCode ? `Histórico de preço de ${selectedAssetCode}` : 'Selecione um ativo na watchlist'}
-        </h2>
-        <PriceChart quotes={assetHistory} />
-      </div>
+        <section className="glass-panel-elevated flex flex-col rounded-xl p-5 lg:col-span-7 lg:min-h-[420px]">
+          <h2 className="mb-4 flex items-center gap-2 text-sm font-medium text-[var(--color-text-muted)]">
+            <ChartLineUp size={16} weight="bold" aria-hidden="true" />
+            {selectedAssetCode ? `Histórico de preço de ${selectedAssetCode}` : 'Selecione um ativo na watchlist'}
+          </h2>
+          <PriceChart quotes={assetHistory} />
+        </section>
 
-      {isLoading ? (
-        <p className="text-sm text-[var(--color-text-muted)]">Carregando...</p>
-      ) : (
-        <WatchlistTable
-          rows={watchlistRows}
-          selectedAssetCode={selectedAssetCode}
-          onSelectAsset={setSelectedAssetCode}
-          onRemove={handleRemove}
-          currency={currency}
-        />
-      )}
+        <section className="glass-panel-elevated overflow-hidden rounded-xl lg:col-span-5 lg:min-h-[420px] lg:max-h-[420px]">
+          {isLoading ? (
+            <p className="p-5 text-sm text-[var(--color-text-muted)]">Carregando...</p>
+          ) : (
+            <WatchlistTable
+              rows={watchlistRows}
+              selectedAssetCode={selectedAssetCode}
+              onSelectAsset={setSelectedAssetCode}
+              onRemove={handleRemove}
+              currency={currency}
+            />
+          )}
+        </section>
+      </div>
     </div>
   )
 }
