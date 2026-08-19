@@ -4,6 +4,10 @@ from django.core.management.base import BaseCommand
 from tracker.models import Asset
 
 ASSETS = [
+    ("USD", "Dólar", "fiat"),
+    ("BRL", "Real", "fiat"),
+    ("BTC", "Bitcoin", "crypto"),
+    ("ETH", "Ethereum", "crypto"),
     ("EUR", "Euro", "fiat"),
     ("GBP", "Libra Esterlina", "fiat"),
     ("JPY", "Iene Japonês", "fiat"),
@@ -27,9 +31,9 @@ ASSETS = [
 
 
 class Command(BaseCommand):
-    """Cadastra a lista curada de assets fiat/crypto, sem duplicar os já existentes."""
+    """Cadastra o catálogo completo de assets fiat/crypto, sem duplicar os já existentes."""
 
-    help = "Seeds the Asset catalog with a curated list of major fiat currencies and cryptocurrencies"
+    help = "Seeds the full Asset catalog (base fiat/crypto pair plus major currencies and cryptocurrencies)"
 
     def handle(self, *args, **options):
         """Cria cada asset da lista via get_or_create e reporta quantos foram criados."""

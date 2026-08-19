@@ -24,7 +24,7 @@ class WatchlistViewSet(viewsets.ModelViewSet):
         return Watchlist.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
-        # filtra por self.request.user e injeta o user automaticamente. criado porque nunca confiamos no que o cliente manda.
+        """Injeta o user autenticado no item criado; nunca confiamos no que o cliente manda."""
         serializer.save(user=self.request.user)
 
 
@@ -35,6 +35,10 @@ class QuoteViewSet(viewsets.ModelViewSet):
         asset: filtra por Asset.code (ex: ?asset=BTC)
         currency: filtra por quote_currency (ex: ?currency=BRL)
         latest: se 'true', devolve só a cotação mais recente por asset/moeda
+        recent: devolve as N cotações mais recentes de CADA asset/moeda (ex:
+            ?recent=2), diferente de page_size que corta o total combinado —
+            necessário pra garantir dado suficiente por ativo com o catálogo
+            crescendo (ver DashboardPage no frontend)
     """
 
     queryset = Quote.objects.all()
@@ -59,4 +63,32 @@ class QuoteViewSet(viewsets.ModelViewSet):
                 'asset', 'quote_currency'
             )
 
+        recent = self.request.query_params.get('recent')
+        if recent:
+            return self._recent_per_asset(queryset, recent)
+
         return queryset.order_by('-timestamp')
+
+    def _recent_per_asset(self, queryset, recent):
+        """Filtra para as N cotações mais novas de cada (asset, quote_currency).
+
+        Feito em Python (não window function) porque filtrar por uma window
+        function exigiria uma subquery no Postgres; com o volume de dados
+        deste projeto, iterar em memória é simples e correto.
+        """
+        try:
+            limit = max(1, int(recent))
+        except ValueError:
+            limit = 1
+
+        seen_counts = {}
+        recent_ids = []
+        for quote_id, asset_id, currency in queryset.order_by('-timestamp').values_list(
+            'id', 'asset_id', 'quote_currency'
+        ):
+            key = (asset_id, currency)
+            seen_counts[key] = seen_counts.get(key, 0) + 1
+            if seen_counts[key] <= limit:
+                recent_ids.append(quote_id)
+
+        return Quote.objects.filter(id__in=recent_ids).select_related('asset').order_by('-timestamp')

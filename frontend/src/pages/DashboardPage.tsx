@@ -23,7 +23,7 @@ export function DashboardPage() {
       const [watchlistRes, assetsRes, quotesRes] = await Promise.all([
         api.get<Paginated<WatchlistItem>>('/watchlist/'),
         api.get<Paginated<Asset>>('/assets/', { params: { page_size: 100 } }),
-        api.get<Paginated<Quote>>('/quotes/', { params: { currency, page_size: 40 } }),
+        api.get<Paginated<Quote>>('/quotes/', { params: { currency, recent: 2, page_size: 200 } }),
       ])
 
       if (cancelled) return

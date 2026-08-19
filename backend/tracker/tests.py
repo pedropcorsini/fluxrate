@@ -65,7 +65,7 @@ class FetchCryptoQuoteTests(APITestCase):
 
     def test_unmapped_asset_raises_quote_fetch_error(self):
         """Asset crypto sem entrada em COINGECKO_IDS deve falhar de forma controlada."""
-        unmapped = Asset.objects.create(code='XRP', name='Ripple', type='crypto')
+        unmapped = Asset.objects.create(code='ZZZ', name='Moeda Inexistente', type='crypto')
         with self.assertRaises(QuoteFetchError):
             fetch_crypto_quote(unmapped, 'BRL')
 
