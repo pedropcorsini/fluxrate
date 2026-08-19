@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { useAuth } from './context/AuthContext'
 import { Navbar } from './components/Navbar'
+import { Footer } from './components/Footer'
 import { LoginPage } from './pages/LoginPage'
 import { RegisterPage } from './pages/RegisterPage'
 import { DashboardPage } from './pages/DashboardPage'
@@ -11,7 +12,7 @@ function ProtectedLayout({ children }: { children: React.ReactNode }) {
   if (!isAuthenticated) return <Navigate to="/login" replace />
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-[var(--color-bg)] text-[var(--color-text)]">
+    <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-[var(--color-bg)] text-[var(--color-text)]">
       <div
         className="pointer-events-none fixed inset-0 -z-10 opacity-40"
         style={{
@@ -21,7 +22,8 @@ function ProtectedLayout({ children }: { children: React.ReactNode }) {
         }}
       />
       <Navbar />
-      {children}
+      <div className="flex-1">{children}</div>
+      <Footer className="mx-auto w-full max-w-6xl px-6 py-6" />
     </div>
   )
 }

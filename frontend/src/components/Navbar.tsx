@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom'
 import { ChartLine, Compass, SignOut } from '@phosphor-icons/react'
 import { useAuth } from '../context/AuthContext'
 import { ThemeToggle } from './ThemeToggle'
+import fluxrateSymbol from '../assets/brand/fluxrate_symbol.png'
 
 const linkClasses = ({ isActive }: { isActive: boolean }) =>
   `flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
@@ -17,7 +18,10 @@ export function Navbar() {
     <header className="glass-panel sticky top-0 z-40 border-x-0 border-t-0">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <div className="flex items-center gap-6">
-          <span className="text-lg font-semibold tracking-tight">fluxrate</span>
+          <div className="flex items-center gap-2">
+            <img src={fluxrateSymbol} alt="" className="h-8 w-8 rounded-lg" aria-hidden="true" />
+            <span className="text-lg font-semibold tracking-tight">fluxrate</span>
+          </div>
           <nav className="flex gap-1">
             <NavLink to="/" end className={linkClasses}>
               <ChartLine size={16} weight="bold" aria-hidden="true" />
