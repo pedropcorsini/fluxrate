@@ -41,7 +41,7 @@ export function PriceChart({ quotes }: PriceChartProps) {
 
   if (data.length === 0) {
     return (
-      <div className="flex h-64 items-center justify-center text-sm text-[var(--color-text-muted)]">
+      <div className="flex min-h-[256px] flex-1 items-center justify-center text-sm text-[var(--color-text-muted)]">
         Sem histórico de cotação ainda.
       </div>
     )
@@ -50,7 +50,7 @@ export function PriceChart({ quotes }: PriceChartProps) {
   const formatCompact = makeCompactFormatter(data.map((point) => point.value))
 
   return (
-    <ResponsiveContainer width="100%" height={256}>
+    <ResponsiveContainer width="100%" height="100%">
       <LineChart data={data} margin={{ top: 8, right: 16, bottom: 0, left: 0 }}>
         <CartesianGrid stroke="var(--color-border)" strokeDasharray="3 3" vertical={false} />
         <XAxis

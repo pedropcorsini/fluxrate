@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { useAuth } from './context/AuthContext'
 import { Navbar } from './components/Navbar'
+import { Footer } from './components/Footer'
 import { LoginPage } from './pages/LoginPage'
 import { RegisterPage } from './pages/RegisterPage'
 import { DashboardPage } from './pages/DashboardPage'
@@ -11,17 +12,18 @@ function ProtectedLayout({ children }: { children: React.ReactNode }) {
   if (!isAuthenticated) return <Navigate to="/login" replace />
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-[var(--color-bg)] text-[var(--color-text)]">
+    <div className="relative flex min-h-screen flex-col overflow-x-hidden bg-[var(--color-bg)] text-[var(--color-text)]">
       <div
         className="pointer-events-none fixed inset-0 -z-10 opacity-40"
         style={{
           backgroundImage:
-            'radial-gradient(600px circle at 10% 0%, var(--color-accent), transparent 60%), radial-gradient(500px circle at 90% 20%, var(--color-up), transparent 55%)',
+            'radial-gradient(600px circle at 10% 0%, var(--color-accent), transparent 60%), radial-gradient(500px circle at 90% 20%, var(--color-up), transparent 55%), radial-gradient(450px circle at 50% 100%, var(--color-accent-secondary), transparent 50%)',
           filter: 'blur(60px)',
         }}
       />
       <Navbar />
-      {children}
+      <div className="flex-1">{children}</div>
+      <Footer className="mx-auto w-full max-w-6xl px-6 py-6" />
     </div>
   )
 }

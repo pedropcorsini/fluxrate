@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
-import { ChartLineUp, TrendUp } from '@phosphor-icons/react'
+import { TrendUp } from '@phosphor-icons/react'
+import fluxrateSymbol from '../assets/brand/fluxrate_symbol.png'
+import { Footer } from './Footer'
 
 interface AuthLayoutProps {
   title: string
@@ -29,7 +31,7 @@ export function AuthLayout({ title, subtitle, children, footer }: AuthLayoutProp
         />
 
         <div className="relative flex items-center gap-2">
-          <ChartLineUp size={24} weight="bold" className="text-white" aria-hidden="true" />
+          <img src={fluxrateSymbol} alt="" className="h-8 w-8 rounded-lg" aria-hidden="true" />
           <span className="text-2xl font-semibold tracking-tight text-white">fluxrate</span>
         </div>
 
@@ -55,13 +57,8 @@ export function AuthLayout({ title, subtitle, children, footer }: AuthLayoutProp
         <div className="relative text-xs text-white/40">© {new Date().getFullYear()} fluxrate</div>
       </div>
 
-      <div className="flex w-full items-center justify-center px-4 py-12 lg:w-1/2">
+      <div className="flex w-full flex-col items-center justify-center gap-10 px-4 py-12 lg:w-1/2">
         <div className="w-full max-w-sm">
-          <div className="mb-8 flex items-center gap-2 lg:hidden">
-            <ChartLineUp size={22} weight="bold" className="text-[var(--color-accent)]" aria-hidden="true" />
-            <span className="text-xl font-semibold tracking-tight">fluxrate</span>
-          </div>
-
           <h1 className="text-2xl font-semibold">{title}</h1>
           <p className="mt-1 text-sm text-[var(--color-text-muted)]">{subtitle}</p>
 
@@ -69,6 +66,8 @@ export function AuthLayout({ title, subtitle, children, footer }: AuthLayoutProp
 
           <div className="mt-6 text-center text-sm text-[var(--color-text-muted)]">{footer}</div>
         </div>
+
+        <Footer className="w-full max-w-sm" />
       </div>
     </div>
   )

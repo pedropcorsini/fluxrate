@@ -30,6 +30,7 @@ cp .env.example .env   # fill in DJANGO_SECRET_KEY, POSTGRES_PASSWORD
 docker compose -f ../docker-compose.yml up -d   # Postgres + Redis
 python manage.py migrate
 python manage.py createsuperuser
+python manage.py seed_assets   # populates the fiat/crypto catalog
 
 python manage.py runserver
 ```
@@ -66,9 +67,9 @@ Open `http://localhost:5173`.
 | `/api/accounts/register/` | POST | none | create a user |
 | `/api/token/` | POST | none | obtain JWT access/refresh pair |
 | `/api/token/refresh/` | POST | none | refresh access token |
-| `/api/assets/` | GET/POST | required | asset catalog |
+| `/api/assets/` | GET (any user) / write (staff only) | required | asset catalog |
 | `/api/watchlist/` | GET/POST/DELETE | required | current user's watchlist |
-| `/api/quotes/` | GET | required | supports `?asset=`, `?currency=`, `?latest=true` |
+| `/api/quotes/` | GET (any user) / write (staff only) | required | supports `?asset=`, `?currency=`, `?latest=true`, `?recent=N` (last N per asset/currency) |
 
 ## Tests
 

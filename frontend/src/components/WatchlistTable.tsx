@@ -30,10 +30,10 @@ export function WatchlistTable({ rows, selectedAssetCode, onSelectAsset, onRemov
   }
 
   return (
-    <div className="glass-panel overflow-hidden rounded-xl">
+    <div className="max-h-full overflow-y-auto lg:max-h-[420px]">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-[var(--color-border)] text-left text-[var(--color-text-muted)]">
+          <tr className="sticky top-0 z-10 border-b border-[var(--color-border)] bg-[var(--color-surface)] text-left text-[var(--color-text-muted)] backdrop-blur">
             <th className="px-4 py-3 font-medium">Ativo</th>
             <th className="px-4 py-3 font-medium">Preço ({currency})</th>
             <th className="px-4 py-3 font-medium">Variação</th>
@@ -47,8 +47,10 @@ export function WatchlistTable({ rows, selectedAssetCode, onSelectAsset, onRemov
               <tr
                 key={row.watchlistId}
                 onClick={() => onSelectAsset(row.asset.code)}
-                className={`cursor-pointer border-b border-[var(--color-border)] transition-colors last:border-0 hover:bg-[var(--color-surface-muted)] ${
-                  selectedAssetCode === row.asset.code ? 'bg-[var(--color-surface-muted)]' : ''
+                className={`cursor-pointer border-b border-l-2 border-[var(--color-border)] transition-colors last:border-0 hover:bg-[var(--color-surface-muted)] ${
+                  selectedAssetCode === row.asset.code
+                    ? 'border-l-[var(--color-accent)] bg-[var(--color-surface-muted)]'
+                    : 'border-l-transparent'
                 }`}
               >
                 <td className="px-4 py-3">
