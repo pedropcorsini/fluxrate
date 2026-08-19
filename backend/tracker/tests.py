@@ -120,3 +120,20 @@ class QuoteEndpointTests(APITestCase):
         response = self.client.get('/api/quotes/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['count'], 1)
+
+    def test_regular_user_cannot_write_quotes(self):
+        """Usuário comum não pode criar cotação via API (catálogo é escrita restrita a staff)."""
+        self.client.force_authenticate(user=self.user)
+        response = self.client.post(
+            '/api/quotes/', {'asset': self.asset.id, 'value': 1, 'quote_currency': 'BRL'}
+        )
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_staff_user_can_write_quotes(self):
+        """Usuário staff pode criar cotação via API."""
+        staff_user = User.objects.create_user(username='staff', password='senha-forte-123', is_staff=True)
+        self.client.force_authenticate(user=staff_user)
+        response = self.client.post(
+            '/api/quotes/', {'asset': self.asset.id, 'value': 1, 'quote_currency': 'BRL'}
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)

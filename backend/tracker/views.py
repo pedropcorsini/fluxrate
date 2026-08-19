@@ -3,14 +3,16 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
 from .models import Asset, Quote, Watchlist
+from .permissions import IsAdminOrReadOnly
 from .serializers import AssetSerializer, QuoteSerializer, WatchlistSerializer
 
 
 class AssetViewSet(viewsets.ModelViewSet):
-    """CRUD do catálogo de assets (fiat/crypto)."""
+    """CRUD do catálogo de assets (fiat/crypto); escrita restrita a staff."""
 
     queryset = Asset.objects.all()
     serializer_class = AssetSerializer
+    permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
 
 
 class WatchlistViewSet(viewsets.ModelViewSet):
@@ -29,7 +31,7 @@ class WatchlistViewSet(viewsets.ModelViewSet):
 
 
 class QuoteViewSet(viewsets.ModelViewSet):
-    """CRUD do histórico de cotações, com filtros opcionais via query params.
+    """CRUD do histórico de cotações (escrita restrita a staff), com filtros opcionais via query params.
 
     Query params suportados:
         asset: filtra por Asset.code (ex: ?asset=BTC)
@@ -43,7 +45,7 @@ class QuoteViewSet(viewsets.ModelViewSet):
 
     queryset = Quote.objects.all()
     serializer_class = QuoteSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
 
     def get_queryset(self):
         """Aplica os filtros de asset/currency/latest sobre o queryset base."""
